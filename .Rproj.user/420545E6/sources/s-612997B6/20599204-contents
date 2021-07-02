@@ -1,0 +1,184 @@
+
+
+  data_madre <- read.csv(file = "002_data/ships.csv", stringsAsFactors = F)
+  data_set <- read.csv(file = "002_data/ships.csv", stringsAsFactors = F)
+
+
+ChangeID <- function(data_set = NULL) { 
+  
+#rejunte <- data_set[, c("SHIPNAME", "SHIP_ID")]
+fusion <-  unique(paste0(data_set$"SHIPNAME", "z8z",  data_set$"SHIP_ID"))  #### OK!
+metralla <- strsplit(fusion, "z8z") #### OK!
+
+mirada <- unlist(metralla)   #### OK!
+ 
+id_view <- mirada[c(F,T)]    #### OK!
+name_view <- mirada[c(T,F)]    #### OK!
+ 
+table_king <- table(id_view, name_view)    #### OK!
+
+dt_id_with_2names <- rowSums(table_king) >= 2     #### OK!
+
+# If really we have problems...
+if (sum(dt_id_with_2names) > 0) {
+  
+id_with_2names <- rownames(table_king)[dt_id_with_2names]    #### OK!
+
+mini_id_problems <- table_king[dt_id_with_2names, ]    #### OK!
+
+##########################################################
+
+# First Case: id with 2 names...
+#             We must change the id of each name...
+
+# Detect names from id_with_2names
+names_from_id_with_2names <- list()
+
+for (k in 1:nrow(mini_id_problems)) {
+  
+  dt_names <- mini_id_problems[k, ] > 0
+  names_from_id_with_2names[[k]] <- colnames(mini_id_problems)[dt_names]
+} # ENd for k
+
+names(names_from_id_with_2names) <- id_with_2names
+
+# Id correction for each name
+# We must change the id of each name...
+for (n in 1:length(names_from_id_with_2names)) for (p in 1:length(names_from_id_with_2names[[n]])) {
+  
+  the_name <- names_from_id_with_2names[[n]][p]
+  
+  new_id <- paste0(names(names_from_id_with_2names)[n], " ***V", p, " of ", length(names_from_id_with_2names[[n]]), "***")
+  dt_name_version <- data_set$"SHIPNAME" == the_name
+  if (sum(dt_name_version) > 0) data_set$"SHIP_ID"[dt_name_version] <- new_id
+  
+  remove(the_name, new_id, dt_name_version)
+  
+} # End double for...
+
+} else names_from_id_with_2names <- list()
+
+
+#Return
+my_exit <- list(data_set, names_from_id_with_2names)
+names(my_exit) <- c("NewData", "id_problems")
+return(my_exit)
+
+}
+
+ChangeNames <- function(data_set = NULL) { 
+  
+
+  fusion <-  unique(paste0(data_set$"SHIPNAME", "z8z",  data_set$"SHIP_ID"))  #### OK!
+  metralla <- strsplit(fusion, "z8z") #### OK!
+  
+  mirada <- unlist(metralla)   #### OK!
+  
+  id_view <- mirada[c(F,T)]    #### OK!
+  name_view <- mirada[c(T,F)]    #### OK!
+  
+  table_king <- table(id_view, name_view)    #### OK!
+  
+  dt_name_with_2ids <- colSums(table_king) >= 2     #### OK!
+  
+  # If really have problems with ID...
+  if (sum(dt_name_with_2ids)) { 
+    
+  name_with_2ids <- colnames(table_king)[dt_name_with_2ids]     #### OK!
+  
+  mini_name_problems <- table_king[,dt_name_with_2ids ]     #### OK!
+  
+  ##########################################################
+  
+  # Second Case: a name with 2 or more id
+  #             We must change the name of each id...
+  
+  # Detect id from name_with_2ids
+  ids_from_name_with_2ids <- list()
+  
+  for (k in 1:ncol(mini_name_problems)) {
+    
+    dt_ids <- mini_name_problems[,k ] > 0
+    ids_from_name_with_2ids[[k]] <- rownames(mini_name_problems)[dt_ids]
+  } # ENd for k
+  
+  names(ids_from_name_with_2ids) <- name_with_2ids
+  
+  # Name correction for each id
+  # We must change the name of each id...
+  for (n in 1:length(ids_from_name_with_2ids)) for (p in 1:length(ids_from_name_with_2ids[[n]])) {
+    
+    the_id <- ids_from_name_with_2ids[[n]][p]
+    
+    new_name <- paste0(names(ids_from_name_with_2ids)[n], " ***V", p, " of ", length(ids_from_name_with_2ids[[n]]), "***")
+    dt_id_version <- data_set$"SHIP_ID" == the_id
+    if (sum(dt_id_version) > 0) data_set$"SHIPNAME"[dt_id_version] <- new_name
+    
+    remove(the_id, new_name, dt_id_version)
+    
+  } # End double for...
+  
+  
+  } else ids_from_name_with_2ids <- list()
+  #Return
+  my_exit <- list(data_set, ids_from_name_with_2ids)
+  names(my_exit) <- c("NewData", "names_problem")
+  return(my_exit)
+  
+}
+
+ChangeDataSet <- function(data_set = NULL) {
+
+  # ID problems correction...
+  step01 <- ChangeID(data_set = data_set)
+  id_problems <- step01[[2]]
+  data1 <- step01$NewData
+  
+  
+  step02 <- ChangeNames(data_set = data1)
+  name_problems <- step02[[2]]
+  data2 <- step02$NewData
+  
+  #Return
+  my_exit <- list(data2, id_problems, name_problems)
+  names(my_exit) <- c("FinalData", "id_problems", "name_problems")
+  return(my_exit)
+  
+  
+}
+
+
+
+final <- ChangeDataSet(data_set = data_set)
+
+data <- final[[1]]
+
+lvl_ship_name <- unique(data$"SHIPNAME")
+lvl_ship_id <- unique(data$"SHIP_ID")
+lvl_fusion <-  paste0(lvl_ship_name, " (", lvl_ship_id, ")")
+
+
+length(lvl_ship_name)
+length(lvl_ship_id)
+length(lvl_fusion)
+
+lvl_ship_name <- unique(data$"SHIPNAME")
+lvl_ship_id <- unique(data$"SHIP_ID")
+lvl_fusion <-  paste0(lvl_ship_name, " (", lvl_ship_id, ")")
+
+cambio <-  "Ship Name (Id)"
+
+if (cambio == "Ship Name"){  
+  cat("Paso 1", "\n")
+  names(lvl_ship_name) <- lvl_ship_name
+  lvl_ship_name <- lvl_ship_name[sort(lvl_ship_name)]
+  
+} else if (cambio == "Ship Id") {
+  cat("Paso 2", "\n")
+  names(lvl_ship_name) <- lvl_ship_id
+  lvl_ship_name <- lvl_ship_name[sort(lvl_ship_id)]
+}   else if (cambio == "Ship Name (Id)"){
+  cat("Paso 3", "\n")
+  names(lvl_ship_name) <- lvl_fusion
+  lvl_ship_name <- lvl_ship_name[sort(lvl_fusion)]
+}

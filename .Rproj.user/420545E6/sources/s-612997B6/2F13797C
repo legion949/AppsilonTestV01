@@ -1,0 +1,27 @@
+{
+    "id": "2F13797C",
+    "path": "C:/Users/Legion/Desktop/FULL/AppsilonTestV01/server.R",
+    "project_path": "server.R",
+    "type": "r_source",
+    "hash": "1719123159",
+    "contents": "",
+    "dirty": false,
+    "created": 1625149011888.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "77,106",
+        "scrollLine": "0"
+    },
+    "folds": "9|34|27|4|\n31|31|49|4|\n153|3|348|2|\n354|3|407|2|\n415|3|531|2|\n464|37|467|4|\n470|36|480|4|\n538|3|578|2|\n591|35|595|4|\n691|46|699|4|\n714|44|722|4|\n",
+    "lastKnownWriteTime": 1625234669,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1625234669117,
+    "read_only": false,
+    "read_only_alternatives": []
+}

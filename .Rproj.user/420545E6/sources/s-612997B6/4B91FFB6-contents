@@ -1,0 +1,114 @@
+
+
+data_madre <- read.csv(file = "002_data/ships.csv", stringsAsFactors = F)
+data_set <- read.csv(file = "002_data/ships.csv", stringsAsFactors = F)
+# data_set2 <- data_set
+
+
+# 
+# # Change for "AMANDA V2"
+# dt_amandaV2 <- data_set2$"SHIP_ID" == 323355
+# if (sum(dt_amandaV2) > 0) data_set2$"SHIPNAME"[dt_amandaV2] <- "AMANDA V2"
+
+DataChanges <- function(data_set = NULL) {
+  
+
+
+# Options...
+lvl_ship_name <- unique(data_set$"SHIPNAME")
+lvl_ship_id <- unique(data_set$"SHIP_ID")
+
+all_fusion <-  paste0(data_set$"SHIPNAME", "z8z", data_set$"SHIP_ID")
+lvl_ship_fusion <- unique(all_fusion)
+
+####### Now id
+metralla_id <- unlist(strsplit(lvl_ship_fusion, "z8z"))[c(F,T)]
+table_id <- table(metralla_id)
+
+dt_ids <- table_id == 2
+repeat_ids <- names(table_id)[dt_ids]
+conteo_log_id <- rep(NA, length(repeat_ids))
+ships_with_same_id <- list()
+
+# Detect names from ships with same id
+for (k in 1:length(repeat_ids)) {
+
+  data <- filter(data_set, SHIP_ID == repeat_ids[k])
+  ships_with_same_id[[k]] <- unique(data$SHIPNAME)
+  conteo_log_id[k] <- nrow(data)
+} # ENd for k
+
+
+# iD Correction
+for (n in 1:length(ships_with_same_id)) for (p in 1:length(ships_with_same_id[[n]])) {
+  
+  the_name <- ships_with_same_id[[n]][p]
+
+  new_id <- paste0(repeat_ids[n], " ***V1 of ", length(ships_with_same_id[[n]]), "***")
+  dt_id_version <- data_set$"SHIPNAME" == the_name
+  if (sum(dt_id_version) > 0) data_set$"SHIP_ID"[dt_id_version] <- new_id
+  
+  remove(the_name, new_id, dt_id_version)
+  
+} # End double for...
+
+#######################################
+####### Now names...
+metralla_name <- unlist(strsplit(lvl_ship_fusion, "z8z"))[c(T,F)]
+table_name <- table(metralla_name)
+
+dt_names <- table_name == 2
+repeat_names <- names(table_name)[dt_names]
+conteo_log_name <- rep(NA, length(repeat_names))
+ships_with_same_name <- list()
+
+# Detect id from ships with same name...
+for (k in 1:length(repeat_names)) {
+  
+  data <- filter(data_set, SHIPNAME == repeat_names[k])
+  ships_with_same_name[[k]] <- unique(data$"SHIP_ID")
+  conteo_log_name[k] <- nrow(data)
+} # ENd for k
+
+
+# Name Correction
+for (n in 1:length(ships_with_same_name)) for (p in 1:length(ships_with_same_name[[n]])) {
+  
+  the_id <- ships_with_same_name[[n]][p]
+  
+  new_name <- paste0(repeat_names[n], " ***V1 of ", length(ships_with_same_name[[n]]), "***")
+  dt_name_version <- data_set$"SHIP_ID" == the_id
+  if (sum(dt_name_version) > 0) data_set$"SHIP_name"[dt_name_version] <- new_name
+  
+  remove(the_id, new_name, dt_name_version)
+  
+} # End double for...
+
+
+# Return
+return(data_set)
+
+}
+
+data_set2 <- DataChanges(data_set = data_set)
+
+
+lvl_ship_name <- unique(data_set2$"SHIPNAME")
+lvl_ship_id <- unique(data_set2$"SHIP_ID")
+lvl_fusion <-  paste0(lvl_ship_name, " (", lvl_ship_id, ")")
+
+length(lvl_ship_name)
+length(lvl_ship_id)
+length(lvl_fusion)
+
+
+
+
+
+# if (input$orden01 == "Ship Name")  names(lvl_ship_name) <- lvl_ship_name else
+#   if (input$orden01 == "Ship Id") names(lvl_ship_name) <- lvl_ship_id  else
+#     if (input$orden01 == "Ship Name (Id)") names(lvl_ship_name) <- lvl_fusion
+# 
+# 
+# selectInput(inputId = "inVar2", label = h4(input$orden01), choices =  lvl_ship_name,
+#             selected = lvl_ship_name[1])

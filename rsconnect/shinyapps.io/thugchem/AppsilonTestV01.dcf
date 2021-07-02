@@ -1,0 +1,13 @@
+name: AppsilonTestV01
+title: AppsilonTestV01
+username:
+account: thugchem
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4345925
+bundleId: 4780947
+url: https://thugchem.shinyapps.io/AppsilonTestV01/
+when: 1625235757.89831
+lastSyncTime: 1625235757.89831
+asMultiple: FALSE
+asStatic: FALSE

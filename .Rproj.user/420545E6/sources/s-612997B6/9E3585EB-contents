@@ -1,0 +1,20 @@
+
+KAROLI
+
+
+# data <- read.csv(file = "002_data/recorte.csv")
+data_madre <- read.csv(file = "002_data/ships.csv")
+
+input_date <- 
+  
+sum(is.na(data_madre$SHIP_ID))
+
+
+mod_date <- parse_date_time(input_date, orders = "ymd HMS")
+date_order <- order(mod_date, decreasing = T)
+data <- data[date_order, ]
+
+# First and Last Records
+first_record <- mod_date[nrow(data)]
+last_record <- mod_date[1]
+total_time <- as.numeric(last_record - first_record)/60

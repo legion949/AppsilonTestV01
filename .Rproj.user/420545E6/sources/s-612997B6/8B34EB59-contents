@@ -1,0 +1,79 @@
+
+
+
+### ShipName
+#  my_ship_name <- as.character(as.vector(strsplit(input$inVar2, " [(]")[[1]][1]))
+my_ship_name <-  "VALO"
+### Only records of my ship
+data <- filter(data_madre, SHIPNAME == my_ship_name)
+
+# Step 1: we must order data for data_order: new to older...
+# Step 2: We can calculated the distance between two consecutive observation
+#         and select now the largest distance...
+#         And we select ever the first option becouse this is the most recent
+
+
+### Step 1: we must order data for date_order: new to older...
+### Date Format for Date
+input_date <- data$"DATETIME"
+mod_date <- parse_date_time(input_date, orders = "ymd HMS")
+date_order <- order(mod_date, decreasing = T)
+data <- data[date_order, ]
+
+
+### Step 2: We can calculated the distance between two consecutive observation
+###         and select now the largest distance...
+###         And we select ever the first option becouse this is the most recent
+
+# Distance Calculator
+coords <- data[,c("LON", "LAT")]
+shipe_distance <- DistCalculator(input_coords = coords, input_round = 4)
+
+
+pos_max_distance <- which.max(shipe_distance)[1]
+
+selected_rows <- c(pos_max_distance, pos_max_distance - 1)
+data <- data[selected_rows, ]
+Status <- c("Beginning", "End")
+data <- cbind(Status, data)
+
+my_distance_meters <- round(shipe_distance[pos_max_distance], 0)
+my_distance_km <- round(my_distance_meters/1000, 0)
+
+
+beg_time <- parse_date_time(data$"DATETIME"[1], orders = "ymd HMS")
+end_time <- parse_date_time(data$"DATETIME"[2], orders = "ymd HMS")
+
+my_time_hours <- round(abs(as.numeric(difftime(end_time, beg_time, units = "hours"))), 0)
+my_time_mins <- round(abs(as.numeric(difftime(end_time, beg_time, units = "mins"))), 0)
+my_time_secs <- round(abs(as.numeric(difftime(end_time, beg_time, units = "secs"))), 0)
+
+
+###
+my_speed_ms <- round(my_distance_meters/my_time_secs, 1)
+my_speed_kmM <- round(my_distance_km/my_time_mins, 2)
+my_speed_knots <- round(my_speed_ms*1.94, 1)
+
+
+my_names <- c("Distance", "Time", "Mean Speed")
+
+my_values <- matrix(NA, 3, length(my_names))
+colnames(my_values) <- my_names
+my_values[1,] <- c(paste0(my_distance_meters, " (m)"), 
+                   paste0(my_time_secs, " (sec)"), 
+                   paste0(my_speed_ms, " (m/sec)")) 
+
+my_values[2,] <- c(paste0(my_distance_km, " (Km)"), 
+                   paste0(my_time_mins, " (min)"), 
+                   paste0(my_speed_kmM, " (Km/min)"))
+
+
+my_values[3,] <- c(paste0(my_distance_meters, " (m)"), 
+                   paste0(my_time_secs, " (min)"), 
+                   paste0(my_speed_knots, " (knots)"))
+
+
+#### All toguether...1
+my_exit <- list(data, my_values)
+
+my_exit

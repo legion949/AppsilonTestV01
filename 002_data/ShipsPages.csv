@@ -1,0 +1,17 @@
+Orden,Ship Name,id,Page,Comments
+1,ARETHOUSA,123147,https://www.marinetraffic.com/es/ais/details/ships/shipid:123147/mmsi:209799000/imo:9232060/vessel:ARETHOUSA,No Comments
+2,BALTICO,6333,https://www.marinetraffic.com/es/ais/details/ships/shipid:4219424/mmsi:261032420/imo:0/vessel:BALTICO,No Comments
+3,FINNKRAFT,3615,https://www.marinetraffic.com/es/ais/details/ships/shipid:3615/mmsi:230006000/imo:9207883/vessel:FINNKRAFT,No Comments
+4,FINNPULP,5628,https://www.marinetraffic.com/es/ais/details/ships/shipid:5628/mmsi:230643000/imo:9212644/vessel:FINNPULP,No Comments
+5,IDUNA,122006,https://www.marinetraffic.com/es/ais/details/ships/shipid:314612/mmsi:259759000/imo:7431698/vessel:IDUNA,No Comments
+6,KAROLI,2764,https://www.marinetraffic.com/es/ais/details/ships/shipid:2764/mmsi:229536000/imo:9180841/vessel:KAROLI,No Comments
+7,KERLI,3338,https://www.marinetraffic.com/es/ais/details/ships/shipid:3338/mmsi:229849000/imo:9125695/vessel:KERLI,No Comments
+8,MERI,6223,https://www.marinetraffic.com/hy/ais/details/ships/shipid:6223/mmsi:230941700/imo:9622502/vessel:MERI,No Comments
+9,SAR 111261105,73528,https://www.marinetraffic.com/hy/ais/details/ships/shipid:73528/mmsi:111261105/imo:0/vessel:SAR_111261105,SAR Air Craft (Plane with Synthetic Aperture Radar)
+10,SUULA,6349,https://www.marinetraffic.com/hy/ais/details/ships/shipid:6349/mmsi:230957000/imo:9267560/vessel:SUULA,No Comments
+11,THURKUS,122562,https://www.marinetraffic.com/hy/ais/details/ships/shipid:122562/mmsi:214182795/imo:8915744/vessel:NS_THOR,Actual Ship Name: NS THOR (2021)
+12,VTS HEL,23788,https://www.marinetraffic.com/en/ais/details/ships/shipid:23788/mmsi:2611400/imo:0/vessel:VTS_HEL,Lighthouse
+13,WILSON SKY,122250,https://www.marinetraffic.com/hy/ais/details/ships/shipid:122250/mmsi:257077480/imo:9017393/vessel:WILSON_SKY,No Comments
+14,AMANDA,153800,WebPage not found for this ship,"There are two ships ""AMANDA"" in data set: id 153800  and 323355. The second recive the name ""AMANDA V2"" internally."
+15,AMANDA V2,323355,WebPage not found for this ship,"There are two ships ""AMANDA"" in data set: id 153800  and 323355. The second recive the name ""AMANDA V2"" internally."
+16,No Detected Ship,No Detected Ship,WebPage not found for this ship,No Comments

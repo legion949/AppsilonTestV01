@@ -1,0 +1,63 @@
+observeEvent(input$b1, {
+  
+  
+  if (!is.null(input$my_ship_type_fusion)) {
+    
+    
+    lvl_ship_type_fusion <- sort(unique(paste0(DataSet()[[1]]$"ship_type", " (Cod: ", 
+                                               DataSet()[[1]]$"SHIPTYPE", ")")))
+    
+    
+    cat("AVer:", input$b1, "\n")
+    x <- input$b1
+    
+    # Can use character(0) to remove all choices
+    if (is.null(x))
+      x <- character(0)
+    
+    # Can also set the label and select items
+    updateSelectInput(session, "my_ship_type_fusion",
+                      label = 'Ship Type',
+                      choices = lvl_ship_type_fusion,
+                      selected = lvl_ship_type_fusion[1]
+    )
+    
+    
+    
+    updateRadioButtons(session, "orden01",
+                       label = "Order Type",
+                       choices = c("Ship Name", "Ship Id", "Ship Name (Id)" ),
+                       selected = "Ship Name (Id)"
+    )
+    
+    
+    # Options...
+    # My type ship
+    my_ship_type <- as.character(as.vector(strsplit(input$my_ship_type_fusion, " [(]")[[1]][1]))
+    
+    data <- filter(DataSet()[[1]], ship_type == my_ship_type)
+    
+    lvl_ship_name <- unique(data$"SHIPNAME")
+    lvl_ship_id <- unique(data$"SHIP_ID")
+    lvl_fusion <-  paste0(lvl_ship_name, " (", lvl_ship_id, ")")
+    
+    if (input$orden01 == "Ship Name")  names(lvl_ship_name) <- lvl_ship_name else
+      if (input$orden01 == "Ship Id") names(lvl_ship_name) <- lvl_ship_id  else
+        if (input$orden01 == "Ship Name (Id)") names(lvl_ship_name) <- lvl_fusion
+    
+    lvl_ship_name <- lvl_ship_name[order(names(lvl_ship_name), decreasing = F)]
+    
+    
+    
+    
+    # Can also set the label and select items
+    updateSelectInput(session, "inVar2",
+                      label = h4(input$orden01),
+                      choices = lvl_ship_name,
+                      selected = lvl_ship_name[names(lvl_ship_name) == "THURKUS (122562)"]
+    )
+    
+    
+    
+  }
+})
